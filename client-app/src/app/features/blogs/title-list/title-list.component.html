@@ -1,0 +1,5 @@
+<ul>
+    <li *ngFor="let title of titleList;">
+        <a [routerLink]="['/blog', title.id]">{{title.title}}</a> 
+    </li>
+</ul>

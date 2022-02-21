@@ -1,0 +1,42 @@
+<!--container-->
+<div class="container pt-5">
+    <div class="row">
+        <div class="col">
+
+    <!--form-->
+    <form 
+        [formGroup]="form" 
+        *ngIf="!editMode || (blogPost$ | async)" 
+        (ngSubmit)="onSubmit()" 
+        class="form-group form">
+
+        <label class="h5 my-1">Form Details</label>
+        <div class="form-group mb-2 border p-2">
+            <label for="title">Title</label>
+            <input formControlName="title" class="form-control">
+        </div>
+        <label for="content" class="h5">Contents</label>
+        <div formGroupName="content" class="form-group border p-2">
+            <div formArrayName="sections" class="form-array">
+                <div *ngFor="let section of blogSections.controls; let i=index">
+                    <label class="h6 my-1">Section {{i+1}}</label>
+                    <button (click)="deleteSection(i)" class="btn btn-danger btn-sm mt-1 float-end">Delete</button>
+                    <div [formGroupName]="i" class="form-group mb-3">
+                        <label for="sectionHeader">Header</label>
+                        <input formControlName="sectionHeader" class="form-control">
+                        <label for="sectionText">Text</label>
+                        <textarea formControlName="sectionText" class="form-control"></textarea>
+                    </div>
+                </div>
+                <a (click)="addNewSection()" class="btn btn-primary">+ Add Section</a>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary mt-2 float-end ">Submit Form</button>
+    </form>
+    <!--end form-->
+            <a (click)="cancel()" class="btn btn-primary mt-2">Cancel</a>
+        </div>
+    </div>
+</div>
+

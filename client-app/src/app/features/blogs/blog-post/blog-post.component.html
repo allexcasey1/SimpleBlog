@@ -1,0 +1,20 @@
+<div class="container">
+    <div *ngIf="!!isFetching" class="w-100 h-100 text-center">
+        <div class="h-100 align-self-center">
+            <p>loading...</p>
+        </div>
+    </div>
+
+    <div *ngIf="blogPost" class="row">
+        <div class="col-md-12">
+            <span class="h1">{{blogPost.title}}</span>
+            <button (click)="editBlog()" class="btn btn-primary float-end mt-2">Edit blog</button>
+        </div>
+        <div class="col-md-12" *ngFor="let section of blogPost.content.sections">
+            <h4>{{section.sectionHeader}}</h4>
+            <p>{{section.sectionText}}</p>
+        </div>
+    </div>
+
+</div>
+    
