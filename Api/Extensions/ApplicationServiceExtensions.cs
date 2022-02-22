@@ -12,13 +12,18 @@ namespace Api.Extensions
 {
     public static class ApplicationServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
             services.AddControllers();
             services.AddEndpointsApiExplorer();
+
+            services.AddDbContext<DataContext>(opt => 
+            {
+                opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+            });
             
             services.AddSwaggerGen();
-            services.AddDbContext<DataContext>();
+            
             services.AddCors(opt => 
             {
                 opt.AddPolicy("CorsPolicy", policy =>
