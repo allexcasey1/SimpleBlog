@@ -8,8 +8,7 @@ namespace Application.Core
     {
         public MappingProfiles()
         {
-            CreateMap<BlogPost, BlogPost>()
-                .ForMember(d => d.Content, o => o.MapFrom(s => s.Content));
+            CreateMap<BlogPost, BlogPost>();
             CreateMap<BlogPost, TitleList>()
                 .ForMember(d => d.Id, o => o.MapFrom(s => s.Id))
                 .ForMember(d => d.Title, o => o.MapFrom(s => s.Title)); 

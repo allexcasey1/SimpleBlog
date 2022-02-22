@@ -6,11 +6,11 @@
     </div>
 
     <div *ngIf="blogPost" class="row">
-        <div class="col-md-12">
+        <div class="col-md-12 mb-5">
             <span class="h1">{{blogPost.title}}</span>
             <button (click)="editBlog()" class="btn btn-primary float-end mt-2">Edit blog</button>
         </div>
-        <div class="col-md-12" *ngFor="let section of blogPost.content.sections">
+        <div class="col-md-12 mb-2" *ngFor="let section of blogPost.content.sections">
             <h4>{{section.sectionHeader}}</h4>
             <p>{{section.sectionText}}</p>
         </div>

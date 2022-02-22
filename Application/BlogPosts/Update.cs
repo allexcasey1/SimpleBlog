@@ -3,6 +3,7 @@ using Application.Core;
 using AutoMapper;
 using Domain;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Persistence;
 
 namespace Application.BlogPosts 
@@ -32,14 +33,20 @@ namespace Application.BlogPosts
 
             public async Task<Result<Unit>> Handle(Command request, CancellationToken cancellationToken)
             {
-                var blog = await _context.BlogPosts.FindAsync(request.Blog.Id);
+                var blog = await _context.BlogPosts
+                    .FirstOrDefaultAsync(x => x.Id == request.Blog.Id);
 
                 if (blog == null) return null!;
 
-                while (blog.Content.Sections.Count > request.Blog.Content.Sections.Count)
-                {
-                    blog.Content.Sections.RemoveAt(blog.Content.Sections.Count - 1);
-                }
+                var sections = await _context.Sections
+                    .Where(x => EF.Property<Guid>(x, "ContentId") == request.Blog.Content.Id)
+                    .ToListAsync();
+
+                _context.Sections.RemoveRange(sections);
+
+                request.Blog.Content.Sections.ForEach(section => {
+                    _context.Sections.Add(section);
+                });
 
                 _mapper.Map(request.Blog, blog);
 
