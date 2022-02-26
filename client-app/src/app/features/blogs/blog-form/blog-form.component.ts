@@ -3,7 +3,7 @@ import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, tap } from 'rxjs';
 import { AppError } from 'src/app/common/app-error';
-import { BlogPost, CreateEmptyPost } from 'src/app/models/BlogPost';
+import { BlogPost } from 'src/app/models/BlogPost';
 import { BlogService } from 'src/app/services/blog.service';
 import { v4 as uuid } from 'uuid';
 
@@ -72,6 +72,7 @@ export class BlogFormComponent implements OnInit{
   addNewSection() {
     this.blogSections.push(
       this.fb.group({
+        id: [uuid()],
         sectionHeader: [''],
         sectionText: ['']
       })
@@ -108,13 +109,15 @@ export class BlogFormComponent implements OnInit{
     let posting!: Subscription;
     if(!!this.editMode) {
       posting = this.service.update(blogPost)
-        .subscribe();
+        .subscribe(() => {
+          this.router.navigate(['/blog/' + blogPost.id], {relativeTo: this.route});
+        });
     } else {
       posting = this.service.create(blogPost)
-        .subscribe();
+        .subscribe(() => {
+          this.router.navigate(['/blog/' + blogPost.id], {relativeTo: this.route});
+        });
     }
-    this.router.navigate(['/blog/' + blogPost.id]);
-
   }
 
   cancel() {

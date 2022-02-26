@@ -1,0 +1,16 @@
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
+    <div class="container-fluid">
+        <a class="navbar-brand" routerLink="/">Simple Blog</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <i class="bi-list"></i> 
+        </button>
+        <div class="collapse navbar-collapse" #navbarSupportedContent id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li *ngIf="isAuthenticated" routerLinkActive="active" class="nav-item">
+                    <a class="nav-link" routerLink="/form">Create a new blog</a> </li>
+                <li *ngIf="!isAuthenticated" routerLinkActive="active" class="nav-item">
+                    <a class="nav-link" routerLink="/auth">Login</a> </li>
+            </ul>
+        </div>
+    </div>
+</nav>

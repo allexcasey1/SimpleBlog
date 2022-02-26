@@ -11,20 +11,25 @@ import { AppErrorHandler } from './common/app-error-handler';
 import { TitleListComponent } from './features/blogs/title-list/title-list.component';
 import { BlogPostComponent } from './features/blogs/blog-post/blog-post.component';
 import { BlogFormComponent } from './features/blogs/blog-form/blog-form.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApiInterceptorService } from './services/api-interceptor.service';
+import { AuthComponent } from './features/auth/auth.component';
+import { HeaderComponent } from './features/layout/header/header.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TitleListComponent,
     BlogPostComponent,
-    BlogFormComponent
+    BlogFormComponent,
+    AuthComponent,
+    HeaderComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
     ReactiveFormsModule,
     StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production })

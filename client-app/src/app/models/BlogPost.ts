@@ -9,16 +9,6 @@ export interface BlogPost {
     content: Content;
 }
 
-export function CreateEmptyPost(): BlogPost {
-    return {
-        id: uuid(), 
-        title: "",
-        imageUrl: "",
-        meta: "",
-        content: {} as Content
-    }
-}
-
 
 export interface Content {
     id: string;

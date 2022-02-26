@@ -8,8 +8,8 @@ export const environment: IEnvironment = {
   production: false,
   enableDebugTools: false,
   logLevel: "debug",
-  apiUrl: "",
-  apiHost: ""
+  apiUrl: "api/",
+  apiHost: "http://localhost:5000/"
 };
 
 /*

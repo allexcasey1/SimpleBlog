@@ -7,6 +7,10 @@ using Microsoft.OpenApi.Models;
 using Persistence;
 using Application.Core;
 using Application.BlogPosts;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Application.Interfaces;
+using Infrastructure.Security;
 
 namespace Api.Extensions
 {
@@ -14,7 +18,11 @@ namespace Api.Extensions
     {
         public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration config)
         {
-            services.AddControllers();
+            services.AddControllers(opt => 
+            {
+                var policy = new AuthorizationPolicyBuilder().RequireAuthenticatedUser().Build();
+                opt.Filters.Add(new AuthorizeFilter(policy));
+            });
             services.AddEndpointsApiExplorer();
 
             services.AddDbContext<DataContext>(opt => 
@@ -35,8 +43,10 @@ namespace Api.Extensions
                         .WithOrigins("http://localhost:4200");
                 });
             });
+            services.AddMediatR(typeof(List.Handler).Assembly);
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
-            services.AddMediatR(typeof(Create.Handler).Assembly);
+            services.AddScoped<IUserAccessor, UserAccessor>();
+            
 
             return services;
         }

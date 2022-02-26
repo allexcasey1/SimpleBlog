@@ -3,36 +3,41 @@ using Microsoft.EntityFrameworkCore;
 using Domain;
 using Persistence;
 using Application.Core;
-
+using AutoMapper;
+using AutoMapper.QueryableExtensions;
+using Application.Models;
 
 namespace Application.BlogPosts
 {
     public class Details
     {
-        public class Query : IRequest<Result<BlogPost>>
+        public class Query : IRequest<Result<BlogPostDto>>
         {
             public Guid Id { get; set; }  
         }
 
-        public class Handler : IRequestHandler<Query, Result<BlogPost>>
+        public class Handler : IRequestHandler<Query, Result<BlogPostDto>>
         {
             private readonly DataContext _context;
+            private readonly IMapper _mapper;
 
-            public Handler(DataContext context)
+            public Handler(DataContext context, IMapper mapper)
             {
                 _context = context;
+                _mapper = mapper;
             }
 
-            public async Task<Result<BlogPost>> Handle(Query request, CancellationToken cancellationToken)
+            public async Task<Result<BlogPostDto>> Handle(Query request, CancellationToken cancellationToken)
             {
                 var blogPost = await _context.BlogPosts
-                    .Include(blog => blog.Content)
-                    .ThenInclude(content => content.Sections)
+                    .Include(x => x!.Content)
+                    .ThenInclude(y => y!.Sections)
+                    .ProjectTo<BlogPostDto>(_mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync(x => x.Id == request.Id);
                     
-                if (blogPost == null) return Result<BlogPost>.Failure("Failed to load post.");
+                if (blogPost == null) return Result<BlogPostDto>.Failure("Failed to load post.");
 
-                return Result<BlogPost>.Success(blogPost);
+                return Result<BlogPostDto>.Success(blogPost);
             }
         }
     }
